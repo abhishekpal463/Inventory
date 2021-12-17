@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+var cookieParser = require("cookie-parser");
 require('dotenv').config();
 const ejs = require('ejs');
 const session = require("express-session");
@@ -11,6 +12,7 @@ app.use(express.urlencoded({ extended: false }));//parses the x-www-form-urlenco
 const Material = require('./models/material');
 const Suppliers = require('./models/supplier');
 
+const mongoSanitize = require("express-mongo-sanitize");
 const MongoDbStore = require("connect-mongo");
 
 app.use(session({
@@ -29,6 +31,8 @@ mongoose.connect(
    }
 )
 .catch(err => console.log(err));
+
+app.use(cookieParser());
 
 function today(){
     var date = new Date();
