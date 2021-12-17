@@ -4,7 +4,11 @@
   "description": "inventory management system",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node ./app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhishekpal463/Inventory"
   },
   "author": "",
   "license": "ISC",
