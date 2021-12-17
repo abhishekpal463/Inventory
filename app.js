@@ -215,6 +215,6 @@ app.post('/deletesupplier/:_id',(req,res)=>{
     });
 });
 
-app.listen(8080, ()=>{
-    console.log('running in port 8080..');
+app.listen(process.env.PORT || 3000, function () {
+  console.log("server started on port 3000");
 });
