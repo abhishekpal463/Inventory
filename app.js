@@ -1,17 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
-var cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 require('dotenv').config();
+const passport = require("passport");
 const ejs = require('ejs');
-const session = require("express-session");
-const app = express();
-app.set('view engine', 'ejs');
-app.use(express.json());//parsing the application/json
-app.use(express.urlencoded({ extended: false }));//parses the x-www-form-urlencoded
+var path = require("path");
 
 const Material = require('./models/material');
 const Suppliers = require('./models/supplier');
 
+const app = express();
+const session = require("express-session");
 const mongoSanitize = require("express-mongo-sanitize");
 const MongoDbStore = require("connect-mongo");
 
@@ -32,17 +31,21 @@ mongoose.connect(
 )
 .catch(err => console.log(err));
 
+app.set('view engine', 'ejs');
+app.use(express.json());//parsing the application/json
+app.use(express.urlencoded({ extended: false }));//parses the x-www-form-urlencoded
 app.use(cookieParser());
-
-function today(){
-    var date = new Date();
-    var todaydate = date.toDateString();
-    var minutes = date.getUTCMinutes();
-    var hours = date.getHours();
-    var seconds = date.getSeconds();
-    var format = hours+':'+minutes+':'+seconds+' '+todaydate;
-    return format ;
-};
+app.use(passport.initialize());
+app.use(passport.session());
+// function today(){
+//     var date = new Date();
+//     var todaydate = date.toDateString();
+//     var minutes = date.getUTCMinutes();
+//     var hours = date.getHours();
+//     var seconds = date.getSeconds();
+//     var format = hours+':'+minutes+':'+seconds+' '+todaydate;
+//     return format ;
+// };
 
 //getting to the index
 app.get('/',(req ,res)=>{
@@ -83,7 +86,7 @@ app.post('/addmaterial',(req, res)=>{
     var price = req.body.price;
     var qty = req.body.qty;
     var state = req.body.state;
-    var on = today();
+    var on = new Date();
     Material.addMaterial({
         name:name,price:price,qty:qty,state:state,created_on:on
     } , (err , material)=>{
