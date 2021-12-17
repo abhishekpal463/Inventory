@@ -2,8 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const ejs = require('ejs');
-const Entities = require('html-entities').AllHtmlEntities;
-const entities = new Entities();
 const session = require("express-session");
 const app = express();
 app.set('view engine', 'ejs');
@@ -41,10 +39,7 @@ function today(){
     var format = hours+':'+minutes+':'+seconds+' '+todaydate;
     return format ;
 };
-function sanitizer(string){
-    string = entities.encode(string);
-    return string;
-}
+
 //getting to the index
 app.get('/',(req ,res)=>{
     res.render('index');
@@ -80,10 +75,10 @@ app.get('/materials',async(req , res)=>{
 });
 // add the materials 
 app.post('/addmaterial',(req, res)=>{
-    var name = entities.encode(req.body.name);
-    var price = entities.encode(req.body.price);
-    var qty = entities.encode(req.body.qty);
-    var state = entities.encode(req.body.state);
+    var name = req.body.name;
+    var price = req.body.price;
+    var qty = req.body.qty;
+    var state = req.body.state;
     var on = today();
     Material.addMaterial({
         name:name,price:price,qty:qty,state:state,created_on:on
@@ -102,10 +97,10 @@ app.post('/addmaterial',(req, res)=>{
 // update the material data
 app.post('/editmaterial/:id', async(req ,res)=>{
     var  id = req.params.id;
-    var name = entities.encode(req.body.name);
-    var price = entities.encode(req.body.price);
-    var qty = entities.encode(req.body.qty);
-    var state = entities.encode(req.body.state);
+    var name = req.body.name;
+    var price = req.body.price;
+    var qty = req.body.qty;
+    var state = req.body.state;
     //for creating date
     var on = today();
     await Material.updateMaterial(id , {
@@ -156,14 +151,14 @@ app.get('/suppliers',async(req, res)=>{
         });
 });
 app.post('/addsupplier' , (req ,res)=>{
-    var cmpname = sanitizer(req.body.cmpname);
-    var materialname = sanitizer(req.body.materialname);
-    var state = sanitizer(req.body.state);
-    var emailid = sanitizer(req.body.emailid);
-    var contactno = sanitizer(req.body.contactno);
-    var address = sanitizer(req.body.address);
-    var costprice = sanitizer(req.body.costprice);
-    var qty = sanitizer(req.body.qty);
+    var cmpname = req.body.cmpname;
+    var materialname = req.body.materialname;
+    var state = req.body.state;
+    var emailid = req.body.emailid;
+    var contactno =req.body.contactno;
+    var address = req.body.address;
+    var costprice = req.body.costprice;
+    var qty = req.body.qty;
     var on = today();
     var supplier = {cmpname:cmpname, materialname:materialname, state:state, emailid:emailid, 
                 contactno:contactno, address:address, costprice:costprice, qty:qty ,created_on:on };
@@ -193,14 +188,14 @@ app.get('/showsupplier/:id',(req , res)=>{
 });
 app.post('/editsupplier/:_id',(req ,res)=>{
     var id = req.params._id;
-    var cmpname = sanitizer(req.body.cmpname);
-    var materialname = sanitizer(req.body.materialname);
-    var state = sanitizer(req.body.state);
-    var emailid = sanitizer(req.body.emailid);
-    var contactno = sanitizer(req.body.contactno);
-    var address = sanitizer(req.body.address);
-    var costprice = sanitizer(req.body.costprice);
-    var qty = sanitizer(req.body.qty);
+    var cmpname = req.body.cmpname;
+    var materialname = req.body.materialname;
+    var state = req.body.state;
+    var emailid = req.body.emailid;
+    var contactno = req.body.contactno;
+    var address = req.body.address;
+    var costprice = req.body.costprice;
+    var qty = req.body.qty;
     var on = today();
     var supplier = {cmpname:cmpname, materialname:materialname, state:state, emailid:emailid, 
                 contactno:contactno, address:address, costprice:costprice, qty:qty ,created_on:on };
