@@ -1,23 +1,36 @@
 const express = require('express');
-const app = express();
-const bodyparser = require('body-parser');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const ejs = require('ejs');
 const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
-
-
+const session = require("express-session");
+const app = express();
 app.set('view engine', 'ejs');
-app.use(bodyparser.json());//parsing the application/json
-app.use(bodyparser.urlencoded({ extended: true }));//parses the x-www-form-urlencoded
+app.use(express.json());//parsing the application/json
+app.use(express.urlencoded({ extended: false }));//parses the x-www-form-urlencoded
 
 const Material = require('./models/material');
 const Suppliers = require('./models/supplier');
-mongoose.connect("mongodb+srv://abhishekpal463:Abhipal123@cluster0-wlpqz.mongodb.net/ProductDB", {
-  useUnifiedTopology: true,
-  useNewUrlParser: true
-});
-var db = mongoose.connection;
+
+const MongoDbStore = require("connect-mongo");
+
+app.use(session({
+    secret : process.env.SESSION_SECERT ,
+    resave : false,
+    store : MongoDbStore.create({ mongoUrl: process.env.MONGOURI  }),
+    saveUninitialized : false,
+    cookie : {  maxAge : 10000 * 60 * 60 * 24} /// 24hrs
+}));
+
+mongoose.connect(
+  process.env.MONGOURI,
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+   }
+)
+.catch(err => console.log(err));
 
 function today(){
     var date = new Date();
