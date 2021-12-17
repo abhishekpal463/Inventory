@@ -1,8 +1,12 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
     <head>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">        </head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">     
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+            
     <body>
             <nav>
                 <div class="nav-wrapper blue">
@@ -13,6 +17,7 @@
                   </ul>
                 </div>
               </nav>
+    </body>
               <div class= "container"><br>
                     <a href="addmaterial" class="btn blue" >add material</a>
                     <table class="striped">
@@ -20,43 +25,40 @@
                               <tr>
                                   <th>Name</th>
                                   <th>State</th>
-                                  <th>Price(per-kg)</th>
-                                  <th>Quantity(unit(s))</th>
+                                  <th>Price per-kg</th>
+                                  <th>Quantity unit s</th>
                                   <th>created on</th>
                                   <th></th>
                               </tr>
                             </thead>                    
                             <tbody>
-                                <% obj.forEach(function(object){%>
+                                <%for(let i=0;i<obj.length;i++){%>
                                 <tr>
-                                    <td><%= object.name %></td>
-                                    <td><%= object.state %></td>
-                                    <td>$&nbsp;<%= object.price %></td>
-                                    <td><%= object.qty %></td>
-                                    <td><%= object.created_on%></td>
+                                    <td><%= obj[i].name %></td>
+                                    <td><%= obj[i].state %></td>
+                                    <td>&nbsp;<%= obj[0].price %></td>
+                                    <td><%= obj[i].qty %></td>
+                                    <td><%= obj[i].created_on%></td>
                                     <td>
-                                        <form action="/editmaterial/<%= object._id %>" method="GET">
+                                        <form action="/editmaterial/<%= obj[i]._id %>" method="GET">
                                         <input type="submit" class="btn green" value="edit">
                                         </form>
                                     </td>
                                     <td>
-                                        <form action="/deletematerial/<%= object._id %>" method="post">
+                                        <form action="/deletematerial/<%= obj[i]._id %>" method="post">
                                           <input type="submit" class="btn red" value="del">
                                         </form>
                                     </td>
                                     <td>
-                                      <form action="/showmaterials/<%= object._id %>" method="post">
+                                      <form action="/showmaterials/<%= obj[i]._id %>" method="post">
                                         <input type="submit" class="btn blue" value="watch">
                                       </form>
                                    </td>
                                 </tr>
-                              <% });%>
+                                <%}%>
                             </tbody>
                           </table><br><br>                  
                  </div>
-                  <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>    </body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>    
 </html>

@@ -11,9 +11,12 @@ app.set('view engine', 'ejs');
 app.use(bodyparser.json());//parsing the application/json
 app.use(bodyparser.urlencoded({ extended: true }));//parses the x-www-form-urlencoded
 
-Material = require('./models/material');
-Suppliers = require('./models/supplier');
-mongoose.connect('mongodb://localhost/inventory');
+const Material = require('./models/material');
+const Suppliers = require('./models/supplier');
+mongoose.connect("mongodb+srv://abhishekpal463:Abhipal123@cluster0-wlpqz.mongodb.net/ProductDB", {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+});
 var db = mongoose.connection;
 
 function today(){
@@ -38,23 +41,29 @@ app.get('/addmaterial' , (req ,res)=>{
     res.render('addmaterial');
 });
 //getting editmaterial page
-app.get('/editmaterial/:id',(req, res)=>{
+app.get('/editmaterial/:id',async(req, res)=>{
     var id = req.params.id;
-    res.render('editmaterial',{ id:id });
+    const material = await Material.findById(id);
+    res.render('editmaterial',{ id:id,name:material.name,state:material.state,price:material.price,qty:material.qty });
 });
 //getting materials
-app.get('/materials',(req , res)=>{
-    Material.getMaterials((err , materials)=>{
-        if(err){
-            res.render('material' , {
-                msg:'Error in getting details..' 
-            });
-        }
-        else{
-        var obj = materials;
-        res.render('material', { obj:obj } );
-        }
-    }) 
+app.get('/materials',async(req , res)=>{
+    const materials = await Material.find({});
+    //console.log(materials)
+    // await Material.find((err , materials)=>{
+    //     if(err){
+    //         console.log(err)
+    //         res.render('material' , {
+    //             msg:'Error in getting details..' 
+    //         });
+    //     }
+    //     else{
+    //     // let obj = materials;
+    //     console.log(materials);
+
+       res.render('material', { obj:materials } );
+    //     }
+    // }) 
 });
 // add the materials 
 app.post('/addmaterial',(req, res)=>{
@@ -78,7 +87,7 @@ app.post('/addmaterial',(req, res)=>{
     });
 });
 // update the material data
-app.post('/editmaterial/:id',(req ,res)=>{
+app.post('/editmaterial/:id', async(req ,res)=>{
     var  id = req.params.id;
     var name = entities.encode(req.body.name);
     var price = entities.encode(req.body.price);
@@ -86,7 +95,7 @@ app.post('/editmaterial/:id',(req ,res)=>{
     var state = entities.encode(req.body.state);
     //for creating date
     var on = today();
-    Material.updateMaterial(id , {
+    await Material.updateMaterial(id , {
         name:name,price:price,qty:qty,state:state,created_on:on
     },{}, (err , callback)=>{
         if(err){
@@ -121,15 +130,15 @@ app.get('/editsupplier/:id',(req,res)=>{
     res.render('editsupplier', {id:id});
 });
 // finds the suppliers
-app.get('/suppliers',(req, res)=>{
-        Suppliers.getSuppliers((err , suppliers)=>{
+app.get('/suppliers',async(req, res)=>{
+        await Suppliers.find((err , suppliers)=>{
             if(err)
             {
                 res.render('supplier' , {
                     msg:'some error occured!!'
                 });
             }
-            var obj = suppliers; 
+            let obj = suppliers; 
             res.render('supplier' , {obj:obj});
         });
 });

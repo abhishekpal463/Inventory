@@ -27,29 +27,29 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% obj.forEach(function(object){%>
+                      <%for(let i=0;i<obj.length;i++){%>
                       <tr>
-                        <td><%= object.cmpname%></td>
-                        <td><%= object.contactno%></td>
-                        <td><%= object.emailid%></td>
-                        <td><%= object.created_on%></td>
+                        <td><%= obj[i].cmpname%></td>
+                        <td><%= obj[i].contactno%></td>
+                        <td><%= obj[i].emailid%></td>
+                        <td><%= obj[i].created_on%></td>
                         <td>
-                        <form action="/editsupplier/<%= object._id %>" method="get">
+                        <form action="/editsupplier/<%= obj[i]._id %>" method="get">
                            <input type="submit" class="green btn" value="edit">
                         </form>
                         </td>
                         <td>
-                        <form action="/deletesupplier/<%= object._id %>" method="post">
+                        <form action="/deletesupplier/<%= obj[i]._id %>" method="post">
                            <input type="submit" class="red btn" value="del">
                         </form>
                         </td>
                         <td>
-                        <form action="/showsupplier/<%= object._id %>" method="get">
+                        <form action="/showsupplier/<%= obj[i]._id %>" method="get">
                            <input type="submit" class="blue btn" value="info">
                         </form>
                         </td>
                       </tr>
-                      <% });%>
+                      <% }%>
                     </tbody>
                   </table>
               </div>

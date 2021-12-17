@@ -25,13 +25,13 @@
                                     <span class="card-title blue-text">Edit Material</span>
                                     <div class="row">
                                             <div class="input-field col s12">
-                                              <input id="text" type="text" name="name">
+                                              <input id="text" type="text" name="name" value=<%=name%>>
                                               <label for="text">Material Name</label>
                                             </div>
                                         </div>
                                         <label>Material Type</label>
                                         <select class="browser-default" name="state">
-                                            <option value="" disabled selected>choose type</option>
+                                            <option value="" disabled selected><%=state%></option>
                                             <option value="solid">Solid</option>
                                             <option value="liquid">Liquid</option>
                                             <option value="gas">Gas</option>
@@ -39,11 +39,11 @@
                                         <div class="col s12 row">
                                             <div class="col s6">
                                                 <label>Price(per kg)</label>
-                                                <input type="number" placeholder="$0.0" name="price">
+                                                <input type="number" placeholder="$0.0" name="price" value=<%=price%>>
                                             </div>
                                             <div class="col s6">
                                                 <label>Quantity(unit(s))</label>
-                                                <input type="number" placeholder="0" name="qty">
+                                                <input type="number" placeholder="0" name="qty" value=<%=qty%>>
                                             </div>
                                         </div>
                                         <input type="submit" class="btn blue" value="submit">
